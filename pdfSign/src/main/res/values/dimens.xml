@@ -18,6 +18,7 @@
     <dimen name="sign_field_step_size">4.0dp</dimen>
     <dimen name="sign_field_min_height">24.0dp</dimen>
     <dimen name="sign_field_max_height">170.0dp</dimen>
+    <dimen name="pen_size">3dp</dimen>
     <dimen name="sign_field_max_width">300.0dp</dimen>
     <dimen name="sign_field_min_width">50.0dp</dimen>
     <dimen name="sign_field_default_height">60.0dp</dimen>
