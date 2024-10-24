@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="default_draw_size">4dp</dimen>
+    <dimen name="text_view_padding">3dp</dimen>
+
+    <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="signature_view_header">40.0dp</dimen>
+    <dimen name="signature_base_line_bottom_margin">80.0dp</dimen>
+    <dimen name="signature_panel_horizontal_margin">0.0dp</dimen>
+    <dimen name="sign_left_offset">24.0dp</dimen>
+    <dimen name="sign_right_offset">16.0dp</dimen>
+    <dimen name="sign_menu_width">210.0dp</dimen>
+    <dimen name="sign_top_offset">18.0dp</dimen>
+    <dimen name="sign_button_height">55.0dp</dimen>
+    <dimen name="menu_offset_y">30.0dp</dimen>
+    <dimen name="menu_offset_x">10.0dp</dimen>
+    <dimen name="sign_field_step_size">4.0dp</dimen>
+    <dimen name="sign_field_min_height">24.0dp</dimen>
+    <dimen name="sign_field_max_height">170.0dp</dimen>
+    <dimen name="sign_field_max_width">300.0dp</dimen>
+    <dimen name="sign_field_min_width">50.0dp</dimen>
+    <dimen name="sign_field_default_height">60.0dp</dimen>
+    <dimen name="mhigh">5.0dp</dimen>
+    <dimen name="element_min_width">25.0dp</dimen>
+    <dimen name="element_horizontal_padding">5.0dp</dimen>
+    <dimen name="element_vertical_padding">0.0dp</dimen>
+    <dimen name="pagenumber_overlay_margin_top">10.0dp</dimen>
+    <dimen name="pagenumber_left_margin">15.0dp</dimen>
+    <dimen name="pagenumber_top_bottom_margin">6.0dp</dimen>
+    <dimen name="pagenumber_right_margin">15.0dp</dimen>
+    <dimen name="textViewTextSize">14.0sp</dimen>
+
+
+    <!-- font sizes -->
+
+    <!-- typical spacing between two views -->
+    <dimen name="spacing_normal">16dp</dimen>
+    <dimen name="card_corner_radius">20dp</dimen>
+
+    <!-- typical sizes of views -->
+
+</resources>
