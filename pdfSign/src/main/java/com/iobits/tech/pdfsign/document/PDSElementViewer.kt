@@ -51,8 +51,8 @@ class PDSElementViewer(
     internal inner class CustomDragShadowBuilder constructor(
         view: View?, var mX: Int, var mY: Int
     ) : DragShadowBuilder(view) {
-        public override fun onDrawShadow(canvas: Canvas) {}
-        public override fun onProvideShadowMetrics(point: Point, point2: Point) {
+        override fun onDrawShadow(canvas: Canvas) {}
+        override fun onProvideShadowMetrics(point: Point, point2: Point) {
             super.onProvideShadowMetrics(point, point2)
             point2.set(
                 ((mX.toFloat()) * pageViewer!!.scaleFactor).toInt(),
