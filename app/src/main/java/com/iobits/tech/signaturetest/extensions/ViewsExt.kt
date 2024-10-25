@@ -35,6 +35,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
@@ -157,7 +158,14 @@ fun BottomSheetDialogFragment.openBottomSheet(activity: FragmentActivity?) {
         this.show(fragmentManager, this.tag)
     }
 }
-
+fun DialogFragment.openDialog(activity: FragmentActivity?) {
+    if (this.isAdded) {
+        this.dismiss()
+    }
+    activity?.supportFragmentManager?.let { fragmentManager ->
+        this.show(fragmentManager, this.tag)
+    }
+}
 fun BottomSheetDialogFragment.dismissSafely() {
     if (this.isAdded) {
         this.dismiss()

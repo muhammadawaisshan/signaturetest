@@ -21,6 +21,8 @@ import com.iobits.tech.pdfsign.pdf.PDSPDFDocument
 import com.iobits.tech.pdfsign.pdf.PDSPDFPage
 import com.iobits.tech.pdfsign.pds_model.PDSElement
 import com.iobits.tech.signaturetest.databinding.FragmentEditorBinding
+import com.iobits.tech.signaturetest.extensions.navigateSafe
+import com.iobits.tech.signaturetest.extensions.openDialog
 import com.iobits.tech.signaturetest.extensions.showToast
 import com.iobits.tech.signaturetest.extensions.visible
 
@@ -48,11 +50,20 @@ class EditorFragment : Fragment(), PdfDocumentProvider {
     ): View {
         binding.apply {
             parent.setOnClickListener {
-                pickPdfLauncher.launch("application/pdf") // Set the MIME type to PDF files
-
+                pickPdfLauncher.launch("application/pdf")
             }
             addSign.setOnClickListener {
-                val bitmap = Bitmap.createBitmap(150, 150, Bitmap.Config.ARGB_8888)
+                 SignPadFragment(onDismissed = { bitmap: Bitmap? ->
+                    bitmap?.let {
+                        addElement(
+                            bitmap,
+                            resources.getDimension(com.iobits.tech.pdfsign.R.dimen.sign_field_default_height),
+                            resources.getDimension(com.iobits.tech.pdfsign.R.dimen.sign_field_default_height)
+                        )
+                    } ?: run {
+                        showToast("bitmap is null")
+                    }
+                }).openDialog(requireActivity())/*val bitmap = Bitmap.createBitmap(150, 150, Bitmap.Config.ARGB_8888)
                 val canvas = Canvas(bitmap)
                 val randomColor = (0xFF000000 or (Math.random() * 0xFFFFFF).toLong()).toInt()
                 val paint = Paint().apply {
@@ -63,7 +74,7 @@ class EditorFragment : Fragment(), PdfDocumentProvider {
                     bitmap,
                     resources.getDimension(com.iobits.tech.pdfsign.R.dimen.sign_field_default_height),
                     resources.getDimension(com.iobits.tech.pdfsign.R.dimen.sign_field_default_height)
-                )
+                )*/
             }
         }
         return binding.root
