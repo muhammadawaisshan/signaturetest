@@ -4,16 +4,16 @@
     android:id="@+id/menu_layout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="8dp"
+    app:cardCornerRadius="3dp"
     app:cardElevation="0.7dp"
     android:orientation="horizontal">
 
 
     <ImageButton
         android:id="@+id/delButton"
-        android:layout_width="50dp"
-        android:layout_height="30dp"
-        android:background="#1F46BF"
+        android:layout_width="35dp"
+        android:layout_height="15dp"
+        android:background="#99ABDE"
         android:src="@drawable/baseline_remove_24" />
 
 </androidx.cardview.widget.CardView>

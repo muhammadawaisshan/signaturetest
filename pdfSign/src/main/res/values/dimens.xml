@@ -13,7 +13,7 @@
     <dimen name="sign_menu_width">210.0dp</dimen>
     <dimen name="sign_top_offset">18.0dp</dimen>
     <dimen name="sign_button_height">55.0dp</dimen>
-    <dimen name="menu_offset_y">30.0dp</dimen>
+    <dimen name="menu_offset_y">15.0dp</dimen>
     <dimen name="menu_offset_x">10.0dp</dimen>
     <dimen name="sign_field_step_size">4.0dp</dimen>
     <dimen name="sign_field_min_height">24.0dp</dimen>

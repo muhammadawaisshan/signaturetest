@@ -3,27 +3,36 @@ package com.iobits.tech.pdfsign.document
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Matrix
+import android.graphics.Paint
 import android.graphics.PointF
 import android.graphics.Rect
 import android.graphics.RectF
 import android.os.AsyncTask
 import android.os.Build
 import android.os.SystemClock
+import android.text.InputType
 import android.util.SizeF
 import android.view.DragEvent
 import android.view.GestureDetector
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
 import android.view.ViewConfiguration
+import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.OverScroller
 import android.widget.RelativeLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MotionEventCompat
 import androidx.core.view.ViewCompat
 import com.iobits.tech.pdfsign.R
@@ -32,7 +41,6 @@ import com.iobits.tech.pdfsign.pdf.PDSPDFPage
 import com.iobits.tech.pdfsign.pds_model.PDSElement
 import com.iobits.tech.pdfsign.utils.PDSSignatureUtils
 import com.iobits.tech.pdfsign.utils.ViewUtils
-import java.io.File
 import java.util.Observable
 import java.util.Observer
 
@@ -42,7 +50,7 @@ class PDSPageViewer(
 ) : FrameLayout(
     mContext
 ), Observer {
-    var isFirstTap: Boolean = true
+    private var isFirstTap: Boolean = true
     private val mImageView: ImageView
     private val mInflater: LayoutInflater
     private val mProgressView: LinearLayout
@@ -126,7 +134,7 @@ class PDSPageViewer(
             }
             z
         }
-        pageView!!.setOnDragListener { view, dragEvent ->
+        pageView!!.setOnDragListener { _, dragEvent ->
             when (dragEvent.action) {
                 1 -> {
                     mLastDragPointX = -1.0f
@@ -181,6 +189,14 @@ class PDSPageViewer(
             return true
         }
 
+        override fun onDoubleTap(e: MotionEvent): Boolean {
+            val x = e.x
+            val y = e.y
+            onDoubleClick(
+                x, y
+            )                                                                       //the double tap coordinates
+            return true
+        }
 
         override fun onScroll(
             motionEvent: MotionEvent?, motionEvent2: MotionEvent, f: Float, f2: Float
@@ -427,6 +443,108 @@ class PDSPageViewer(
 
     }
 
+    /*fun onDoubleClick(x: Float, y: Float) {
+        val bitmap = Bitmap.createBitmap(150, 150, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        val randomColor = (0xFF000000 or (Math.random() * 0xFFFFFF).toLong()).toInt()
+        val paint = Paint().apply {
+            color = randomColor
+        }
+        canvas.drawRect(0f, 0f, bitmap.width.toFloat(), bitmap.height.toFloat(), paint)
+
+        val width = bitmap.width.toFloat()
+        val height = bitmap.height.toFloat()
+
+        createElement(
+            PDSElement.PDSElementType.PDSElementTypeImage,
+            bitmap,
+            x,
+            y,
+            width,
+            height
+        )
+    }*/
+    fun onDoubleClick(x: Float, y: Float) {
+        // Create the EditText dynamically
+        val editText = EditText(context).apply {
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+
+            hint = "Enter text"
+            imeOptions = EditorInfo.IME_ACTION_DONE
+            inputType = InputType.TYPE_CLASS_TEXT
+        }
+
+        // Add the EditText to the page view
+        pageView?.addView(editText)
+
+        // Position the EditText at the clicked coordinates
+        editText.x = x
+        editText.y = y
+
+        // Handle the done action
+        editText.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE ||
+                (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
+
+                // Get the input text
+                val inputText = v.text.toString()
+
+                // Check if the input is empty
+                if (inputText.isNotBlank()) {
+                    // Create bitmap from the input text
+                    val bitmap = createBitmapFromText(inputText)
+
+                    // Call createElement with the new bitmap
+                    createElement(
+                        PDSElement.PDSElementType.PDSElementTypeImage,
+                        bitmap,
+                        x,
+                        y,
+                        bitmap.width.toFloat(),
+                        bitmap.height.toFloat()
+                    )
+                }
+
+                // Remove the EditText from the parent regardless of input
+                pageView?.removeView(editText).also {
+                    pageView?.hideKeyboard()
+                }
+
+                true
+            } else {
+                false
+            }
+        }
+
+        // Show the keyboard for user input
+        editText.requestFocus()
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
+    }
+
+    // Function to create a bitmap from the input text
+    private fun createBitmapFromText(text: String): Bitmap {
+        val paint = Paint().apply {
+            color = Color.BLACK // Text color
+            textSize = 50f // Set desired text size
+            textAlign = Paint.Align.LEFT
+        }
+
+        // Measure text dimensions
+        val textWidth = paint.measureText(text).toInt()
+        val textHeight = (paint.descent() - paint.ascent()).toInt()
+
+        // Create bitmap
+        val bitmap = Bitmap.createBitmap(textWidth, textHeight, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        canvas.drawText(text, 0f, -paint.ascent(), paint) // Draw the text onto the canvas
+        return bitmap
+    }
+
+
     private fun initRenderingAsync() {
 
         if ((mImage == null) && (mImageView.width > 0) && (mInitialRenderingTask == null || mInitialRenderingTask!!.status == AsyncTask.Status.FINISHED)) {
@@ -581,7 +699,7 @@ class PDSPageViewer(
         }
     }
 
-    fun createElement(
+    /*fun createElement(
         fASElementType: PDSElement.PDSElementType,
         file: File?,
         f: Float,
@@ -596,7 +714,7 @@ class PDSPageViewer(
             addElement.elementView?.requestFocus()
         }
         return fASElement
-    }
+    }*/
 
     fun createElement(
         fASElementType: PDSElement.PDSElementType,
@@ -883,4 +1001,9 @@ class PDSPageViewer(
     companion object {
         private val DRAG_SHADOW_OPACITY = 180
     }
+}
+fun View.hideKeyboard(): Boolean {
+    val inputMethodManager =
+        this?.context?.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as? InputMethodManager
+    return inputMethodManager?.hideSoftInputFromWindow(this.windowToken, 0) ?: false
 }

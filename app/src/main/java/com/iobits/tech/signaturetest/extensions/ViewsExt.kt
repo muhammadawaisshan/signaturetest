@@ -308,6 +308,12 @@ fun Fragment.hideKeyboard(view: View?): Boolean {
     return inputMethodManager?.hideSoftInputFromWindow(view.windowToken, 0) ?: false
 }
 
+fun View.hideKeyboard(): Boolean {
+    val inputMethodManager =
+        this?.context?.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as? InputMethodManager
+    return inputMethodManager?.hideSoftInputFromWindow(this.windowToken, 0) ?: false
+}
+
 fun Context.showEmailChooser(supportEmail: String, subject: String, body: String? = null) {
     val intent = Intent(Intent.ACTION_SENDTO).apply {
         data = Uri.parse("mailto:")

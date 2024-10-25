@@ -1,9 +1,19 @@
 package com.iobits.tech.pdfsign.pdf
 
+import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import android.graphics.RectF
 import android.graphics.pdf.PdfRenderer
 import android.util.SizeF
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
+import android.widget.FrameLayout
+import android.widget.ImageView
+import androidx.core.view.setMargins
 import com.iobits.tech.pdfsign.document.PDSPageViewer
 import com.iobits.tech.pdfsign.pds_model.PDSElement
 
@@ -42,6 +52,8 @@ class PDSPDFPage(private val number: Int, val document: PDSPDFDocument) {
             }
         }
     }
+
+    // Method to handle double-click events
 
     fun removeElement(fASElement: PDSElement?) {
         elements.remove(fASElement)
